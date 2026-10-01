@@ -261,12 +261,27 @@ var LZString=function(){var r=String.fromCharCode,o="ABCDEFGHIJKLMNOPQRSTUVWXYZa
   height: 16px;
   line-height: 16px;
   text-align: center;
-  border-radius: 50%;
+  border-radius: 2px;
   background: #888;
   color: #fff;
   font-size: 12px;
-  cursor: help;
+  cursor: pointer;
   margin-left: 4px;
+  position: relative;
+}
+.mod-detail {
+  display: none;
+  position: absolute;
+  background: #333;
+  color: #fff;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  white-space: nowrap;
+  z-index: 10;
+}
+.mod-detail.show {
+  display: inline-block;
 }</style><script role="script" id="twine-user-script" type="text/twine-javascript">/*配合css的全局淡入筛选*/
 $(document).on(':passagedisplay', function (ev) {
 	if (ev.passage.tags.includes('nofade')) {
@@ -588,8 +603,10 @@ Bug不一定修，做到哪里纯看我的心情，游戏是做不完的，这�
 &lt;&lt;/widget&gt;&gt;</tw-passagedata><tw-passagedata pid="21" name="主角前传" tags="noreturn" position="700,375" size="100,100">“我们在修道院的休息间里发现了你。”伊诺温和地回答了你的问题。
 “当时，有在职的守护者准备休息，推门便发现了你。那时你盖着一张羊绒毛毯，正在熟睡。而羊绒毛毯上放了一封信，盖了深绿色的火漆印。”
 “抱歉，我的确无意窥探隐私……但以防万一，我阅读了那封信。信封里有两张信纸，其中一张的确是给修道院的，还有一张信纸的内容应当与你有关。别担心，信我放在了休息间。”
+&lt;&lt;if visited (&quot;主角前传&quot;) == 1&gt;&gt;
 “对了，里面还附赠了一些金币。”伊诺从一旁的小匣子里取出了一个袋子，“我替你保管了它们，现在它们正式属于你了。”
-&lt;i&gt;&lt;font color=&quot;#ffd700&quot;&gt;你获得了500金币。&lt;/font&gt;&lt;/i&gt;&lt;&lt;set $money+=500&gt;&gt;
+&lt;i&gt;&lt;font color=&quot;#ffd700&quot;&gt;你获得了500金币。&lt;/font&gt;&lt;/i&gt;
+&lt;&lt;set $money+=500&gt;&gt;&lt;&lt;/if&gt;&gt;
 
 “如果你需要的话，可以抽空回去看看那封信。它就在休息间的柜子里。”
 
@@ -614,13 +631,13 @@ Bug不一定修，做到哪里纯看我的心情，游戏是做不完的，这�
 “别那么兴奋。”莉莉丝叹口气，“总之你应该小心一些使用工具，还有，不要被枝叶上的刺划到。”
 你现在可以尝试修剪后花园的枝叶了！
 
-[[尝试修剪枝叶|检定1]]&lt;i&gt;（将进行一次敏捷检定）&lt;/i&gt;</tw-passagedata><tw-passagedata pid="28" name="检定组件" tags="widget" position="400,150" size="100,100">&lt;&lt;widget &quot;check&quot;&gt;&gt;
+[[尝试修剪枝叶|检定1]]&lt;i&gt;（将进行检定）&lt;/i&gt;</tw-passagedata><tw-passagedata pid="28" name="检定组件" tags="widget" position="400,150" size="100,100">&lt;&lt;widget &quot;check&quot;&gt;&gt;
 &lt;&lt;set _opt to _args[0]&gt;&gt;
 &lt;&lt;set _attrValue to _opt.value&gt;&gt; /*属性对象接收*/
 &lt;&lt;set _modifier to (typeof _opt.modifier === &quot;number&quot; ? _opt.modifier : 0)&gt;&gt;
 &lt;&lt;set _effectiveValue to _attrValue + _modifier&gt;&gt; /*计算补正*/
 &lt;&lt;set _tipHtml to &#39;&lt;span class=&quot;mod-tip&quot; title=&quot;&#39; + _opt.modInfo + &#39;&quot;&gt;?&lt;/span&gt;&#39;&gt;&gt;
-你的相关属性为：&lt;&lt;print _effectiveValue&gt;&gt;&lt;&lt;print _tipHtml&gt;&gt;
+你的相关属性为：&lt;&lt;print _effectiveValue&gt;&gt;&lt;span class=&quot;mod-tip&quot; onclick=&quot;this.nextElementSibling.classList.toggle(&#39;show&#39;)&quot;&gt;?&lt;/span&gt;&lt;span class=&quot;mod-detail&quot;&gt;&lt;&lt;print _opt.modInfo&gt;&gt;&lt;/span&gt;
 &lt;&lt;set $successRate to Math.trunc((_effectiveValue/20)*100)&gt;&gt;
 你的检定通过率为：&lt;&lt;print $successRate&gt;&gt;%
 &lt;br&gt;
